@@ -37,3 +37,8 @@ CONFIG_FILES = {'PISI Config File': '/home/root/.pisi/conf',
         'Test': '/tmp/test.txt'}
 #PROGRAM_EDIT = '/usr/bin/kate'
 PROGRAM_EDIT = '/usr/bin/gedit'
+
+#
+# System information domain
+#
+INFO_PARAMETERS = {'uname':'uname -a'}
