@@ -13,3 +13,9 @@ dist:
 	cp *.py COPYING build/ubuntu/opt/oshyreman
 	cd build && dpkg --build ubuntu/ oshyreman-$(VERSION).deb
 	rm -rf build/ubuntu
+
+sdist: clean
+	tar czf build/oshyreman-src-$(VERSION).tar.gz Makefile COPYING *.py build/control
+
+clean:
+	rm -f *.pyc

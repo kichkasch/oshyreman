@@ -11,7 +11,7 @@ from constants import *
 import shutil
 from datetime import datetime
 
-def do_backup(files = backup_files):
+def do_backup(files = BACKUP_FILES):
     dir = os.path.join(PATH_LOCAL_BACKUPS, datetime.now().strftime("%Y%m%d-%H:%M:%S"))
     if not os.path.exists(dir):
             os.makedirs(dir)

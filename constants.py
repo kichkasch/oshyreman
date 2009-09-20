@@ -19,7 +19,7 @@ PATH_REMOTE_MAPS = "/home/root/Maps"
 # Backup Domain
 #
 PATH_LOCAL_BACKUPS = os.path.join(PATH_LOCAL_DATA, "Backup")
-backup_files = [
+BACKUP_FILES = [
     '/home/root/.pisi/conf', 
     '/etc/freesmartphone/opim/sqlite-contacts.db', 
     '/etc/freesmartphone/opim/sqlite-calls.db', 
@@ -30,4 +30,10 @@ backup_files = [
 #
 # Config domain
 #
-config_files = {'PISI Config File': '/home/root/.pisi/conf', 'Frameworkd': '/etc/frameworkd.conf'}
+PATH_LOCAL_CONFIG = os.path.join(PATH_LOCAL_DATA, "Config")
+TMPFILE_LOCAL_CONFIG = os.path.join(PATH_LOCAL_CONFIG, "conf.tmp")
+CONFIG_FILES = {'PISI Config File': '/home/root/.pisi/conf', 
+        'Frameworkd': '/etc/frameworkd.conf', 
+        'Test': '/tmp/test.txt'}
+#PROGRAM_EDIT = '/usr/bin/kate'
+PROGRAM_EDIT = '/usr/bin/gedit'
