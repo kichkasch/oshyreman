@@ -34,51 +34,44 @@ class Base():
         labelTitle= gtk.Label()
         labelTitle.set_markup('<big><b>Offline SHR Manager</b></big>')
         box.pack_start(labelTitle, False, False, 0)
-        labelTitle.show()
 
         separator = gtk.HSeparator()
         box.pack_start(separator, False, True, 5)
-        separator.show()
 
         boxDomains = gtk.VBox(False, 5)
         for domain in DOMAINS.keys():
             b = gtk.Button(domain)
-#            b.connect_object("clicked", gtk.Widget.destroy, self.window)
-            boxDomains.pack_start(b,  True,  False,  0)
-            b.show()
-            
+            if domain == 'GPS Tracks':
+                func = self.startGPS
+            elif domain == 'Backup and Restore':
+                func = self.startBackup
+            elif domain == 'Configuration of Files':
+                func = self.startConfig
+            b.connect("clicked", func)
+            boxDomains.pack_start(b,  True,  False,  0)            
         
-        
-        boxDomains.show()
         box.pack_start(boxDomains,  False,  False, 0)
 
         separator = gtk.HSeparator()
         box.pack_start(separator, False, True, 5)
-        separator.show()
 
         self._sysinfoPanel = self._getSysinfoPanel()
         box.pack_start(self._sysinfoPanel, False, True, 5)
-        self._sysinfoPanel.show()
 
         separator = gtk.HSeparator()
         box.pack_start(separator, False, True, 5)
-        separator.show()
 
         boxButtons = gtk.HBox(False, 5)
         bAbout = gtk.Button('About')
         bAbout.connect('clicked', self.showAbout)
         boxButtons.pack_start(bAbout,  True,  False,  0)
-        bAbout.show()
 
         bQuit = gtk.Button('Quit')
         bQuit.connect_object("clicked", gtk.Widget.destroy, self.window)
         boxButtons.pack_start(bQuit,  True,  False,  0)
-        bQuit.show()
 
-        boxButtons.show()
         box.pack_start(boxButtons,  False,  False, 0)
 
-        box.show()
         self.window.add(box)
         self.window.show_all()
 
@@ -93,7 +86,6 @@ class Base():
                 infoHeading = gtk.Label() #"System information - %s" %(group))
                 infoHeading.set_markup("<i>%s</i>" %(group));
                 box.pack_start(infoHeading, False, False, 0)
-                infoHeading.show()
                 
                 store = gtk.ListStore(str,str)
                 
@@ -120,14 +112,10 @@ class Base():
         boxButtons.pack_start(bAbout,  True,  False,  0)
         box.pack_start(boxButtons,  False,  False, 0)
 
-#        box.show_all()
         return box
 
     def _updateSysinfo(self,  target):
         domain_info.doUpdate()
-#        for desc in domain_info.getSysinfo().keys():
-#            self._cell[desc].set_value(domain_info.getSysinfo()[desc])
-#            self.infoLabels[desc].set_text("%s: %s" %(desc, domain_info.getSysinfo()[desc]))
         for table in self._infoTables.values():
             model = table.get_model()
             treeiter = model.get_iter_first()
@@ -171,6 +159,30 @@ class Base():
         d.set_website(PROGRAM_HOMEPAGE)
         ret = d.run()
         d.destroy()
+
+
+    def startBackup(self, target):
+        dialog = BackupDialog(self.window)
+        dialog.run()
+        dialog.destroy()
+
+    def startConfig(self, target):
+        pass
+        
+    def startGPS(self, target):
+        pass
+
+class BackupDialog(gtk.Dialog):
+    """
+    GTK-Dialog to support all backup / restore activitites
+    """
+    
+    def __init__(self,  parent):
+        """
+        Contructor - all components are assembled in here
+        """
+        gtk.Dialog.__init__(self, "Backup and Restore",  parent,  gtk.DIALOG_MODAL ,  (gtk.STOCK_QUIT,gtk.RESPONSE_OK))
+        self.set_size_request(500, 300)
 
 """
 This starts the GUI version of oSHyReMan
