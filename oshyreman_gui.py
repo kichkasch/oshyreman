@@ -80,41 +80,63 @@ class Base():
 
         box.show()
         self.window.add(box)
-        self.window.show()
+        self.window.show_all()
 
     def _getSysinfoPanel(self):
-        box = gtk.VBox(False, 1)
+        box = gtk.VBox(False, 5)
         
         self.infoLabels = {}
+        self._infoTables = {}
+        self._cell = {}
         for group in INFO_GROUPS.keys():
             if len(INFO_GROUPS[group]) > 0:
                 infoHeading = gtk.Label() #"System information - %s" %(group))
-                infoHeading.set_markup("System information - <big><i>%s</i></big>" %(group));
+                infoHeading.set_markup("<i>%s</i>" %(group));
                 box.pack_start(infoHeading, False, False, 0)
                 infoHeading.show()
+                
+                store = gtk.ListStore(str,str)
+                
                 for desc in INFO_GROUPS[group]:
-    #        for desc in domain_info.getSysinfo().keys():
-                    self.infoLabels[desc] = gtk.Label("%s: %s" %(desc, domain_info.getSysinfo()[desc]))
-                    self.infoLabels[desc].set_alignment(0, 0)
-                    box.pack_start(self.infoLabels[desc], False, False, 0)
-                    self.infoLabels[desc].show()
+#                    print ("appending %s %s" %(desc, domain_info.getSysinfo()[desc]))
+                    store.append([desc, domain_info.getSysinfo()[desc]])
+
+                self._infoTables[group] = gtk.TreeView(model=store)
+                cell = gtk.CellRendererText()
+                col = gtk.TreeViewColumn("Attribute", cell, text=0)
+                col.pack_start(cell, False)
+                self._infoTables[group].append_column(col)
+                
+                self._cell[desc] = gtk.CellRendererText()
+                col = gtk.TreeViewColumn("Value", self._cell[desc], text=1)
+                col.pack_start(self._cell[desc], True)
+                self._infoTables[group].append_column(col)
+                
+                box.pack_start(self._infoTables[group], False, False, 0)
 
         boxButtons = gtk.HBox(False, 5)
         bAbout = gtk.Button('Update')
         bAbout.connect('clicked', self._updateSysinfo)
-        boxButtons.pack_end(bAbout,  True,  False,  0)
-        bAbout.show()
-        boxButtons.show()
+        boxButtons.pack_start(bAbout,  True,  False,  0)
         box.pack_start(boxButtons,  False,  False, 0)
 
-        box.show()
+#        box.show_all()
         return box
 
     def _updateSysinfo(self,  target):
         domain_info.doUpdate()
-        for desc in domain_info.getSysinfo().keys():
-            self.infoLabels[desc].set_text("%s: %s" %(desc, domain_info.getSysinfo()[desc]))
+#        for desc in domain_info.getSysinfo().keys():
+#            self._cell[desc].set_value(domain_info.getSysinfo()[desc])
+#            self.infoLabels[desc].set_text("%s: %s" %(desc, domain_info.getSysinfo()[desc]))
+        for table in self._infoTables.values():
+            model = table.get_model()
+            treeiter = model.get_iter_first()
+            while treeiter:
+                desc = model.get_value(treeiter, 0)
+                model.set_value(treeiter, 1, domain_info.getSysinfo()[desc])
+                treeiter = model.iter_next(treeiter)
 
+            
     def main(self):
         """
         Starts up the application ('Main-Loop')

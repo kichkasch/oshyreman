@@ -47,11 +47,14 @@ PROGRAM_EDIT = '/usr/bin/gedit'
 #
 # System information domain
 #
-INFO_GROUPS = {'Hardware':['Processor', 'Hardware', 'Revision'], 'Operating System':['Kernel', 'Disk usage (root)'], 'Applications':[]}
+# make sure, the two definitions match exactly
+INFO_GROUPS = {'Hardware':['Processor', 'Hardware', 'Revision'], 'Operating System':['Kernel', 'Disk usage (root)', 'Disk usage (card)'], 'Applications':[], 'Networking':['Hostname']}
 INFO_PARAMETERS = {
         'Kernel':'uname', 
         'Disk usage (root)':'df | grep /dev/root | cut -c53-56', 
+        'Disk usage (card)':'df | grep /media/card | cut -c53-56', 
         'Processor':'cat /proc/cpuinfo | grep Processor | cut -f2 | cut -c3-', 
         'Hardware':'cat /proc/cpuinfo | grep Hardware | cut -f2 | cut -c3-', 
-        'Revision':'cat /proc/cpuinfo | grep Revision | cut -f2 | cut -c3-'
+        'Revision':'cat /proc/cpuinfo | grep Revision | cut -f2 | cut -c3-', 
+        'Hostname': 'hostname'
         }
