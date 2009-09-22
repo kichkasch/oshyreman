@@ -7,6 +7,12 @@ PATH_LOCAL_DATA = "/home/michael/.offline_shrmanager"
 HOST_REMOTE = "192.168.0.202"
 USER_REMOTE = "root"    # make sure, this user can login without password
 
+PROGRAM_NAME = "Offline SHR Manager"
+PROGRAM_VERSION = "0.0.1"
+FILEPATH_COPYING = "./COPYING"
+PROGRAM_AUTHORS = ['Michael Pilgermann']
+PROGRAM_COMMENTS = "Automate recurring activities for the Freerunner from your Desktop."
+PROGRAM_HOMEPAGE = "http://projects.openmoko.org/projects/oshyreman/"
 
 #
 # GPS Domain
@@ -41,4 +47,11 @@ PROGRAM_EDIT = '/usr/bin/gedit'
 #
 # System information domain
 #
-INFO_PARAMETERS = {'uname':'uname -a'}
+INFO_GROUPS = {'Hardware':['Processor', 'Hardware', 'Revision'], 'Operating System':['Kernel', 'Disk usage (root)'], 'Applications':[]}
+INFO_PARAMETERS = {
+        'Kernel':'uname', 
+        'Disk usage (root)':'df | grep /dev/root | cut -c53-56', 
+        'Processor':'cat /proc/cpuinfo | grep Processor | cut -f2 | cut -c3-', 
+        'Hardware':'cat /proc/cpuinfo | grep Hardware | cut -f2 | cut -c3-', 
+        'Revision':'cat /proc/cpuinfo | grep Revision | cut -f2 | cut -c3-'
+        }
