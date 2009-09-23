@@ -14,10 +14,11 @@ PROGRAM_AUTHORS = ['Michael Pilgermann']
 PROGRAM_COMMENTS = "Automate recurring activities for the Freerunner from your Desktop."
 PROGRAM_HOMEPAGE = "http://projects.openmoko.org/projects/oshyreman/"
 
-#
+#constants.py
 # GPS Domain
 #
-PATH_LOCAL_MAPS = os.path.join(PATH_LOCAL_DATA, "Maps")
+PATH_LOCAL_MAPS = os.path.join(os.path.expanduser("~"), 'Maps') # use this version if you have local TangoGPS installation
+#PATH_LOCAL_MAPS = os.path.join(PATH_LOCAL_DATA, "Maps")
 PATH_REMOTE_MAPS = "/home/root/Maps"
 
 
@@ -48,7 +49,7 @@ PROGRAM_EDIT = '/usr/bin/gedit'
 # System information domain
 #
 # make sure, the two definitions match exactly
-INFO_GROUPS = {'Hardware':['Processor', 'Hardware', 'Revision'], 'Operating System':['Kernel', 'Disk usage (root)', 'Disk usage (card)'], 'Applications':[], 'Networking':['Hostname']}
+INFO_GROUPS = {'Hardware':['Processor', 'Hardware', 'Revision'], 'Operating System':['Kernel', 'Disk usage (root)', 'Disk usage (card)'], 'Applications':[], 'Networking':['Hostname'], 'Status':['Battery']}
 INFO_PARAMETERS = {
         'Kernel':'uname', 
         'Disk usage (root)':'df | grep /dev/root | cut -c53-56', 
@@ -56,5 +57,7 @@ INFO_PARAMETERS = {
         'Processor':'cat /proc/cpuinfo | grep Processor | cut -f2 | cut -c3-', 
         'Hardware':'cat /proc/cpuinfo | grep Hardware | cut -f2 | cut -c3-', 
         'Revision':'cat /proc/cpuinfo | grep Revision | cut -f2 | cut -c3-', 
-        'Hostname': 'hostname'
+        'Hostname': 'hostname', 
+        'Battery': 'mdbus -s org.freesmartphone.odeviced /org/freesmartphone/Device/PowerSupply/battery org.freesmartphone.Device.PowerSupply.GetCapacity', 
+        'GSM': 'mdbus -s org.freesmartphone.ogsmd /org/freesmartphone/GSM/Device org.freesmartphone.GSM.Network.GetSignalStrength'
         }

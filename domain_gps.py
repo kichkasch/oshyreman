@@ -29,6 +29,13 @@ def doImportGxp(src):
 def doRename(old,  new):
     os.system("mv %s %s" %(os.path.join(PATH_LOCAL_MAPS, old), os.path.join(PATH_LOCAL_MAPS, new)))
 
+def getLocalTrackList():
+    ret = []
+    entries = os.listdir(PATH_LOCAL_MAPS)
+    for entry in entries:
+        if os.path.isfile(os.path.join(PATH_LOCAL_MAPS, entry)) and entry.endswith('.log'):
+            ret.append(entry)
+    return ret
 
 def dispatch(argv):
     if argv[1] == 'gps-clear-local':
@@ -43,6 +50,9 @@ def dispatch(argv):
         doImportGxp(sys.argv[2])
     elif argv[1] == 'gps-rename':
         doRename(argv[2], argv[3])
+    elif argv[1] == 'gps-list':
+        for x in getLocalTrackList():
+            print x
 
     else:
         print "Unknown command"
