@@ -49,7 +49,7 @@ PROGRAM_EDIT = '/usr/bin/gedit'
 # System information domain
 #
 # make sure, the two definitions match exactly
-INFO_GROUPS = {'Hardware':['Processor', 'Hardware', 'Revision'], 'Operating System':['Kernel', 'Disk usage (root)', 'Disk usage (card)'], 'Applications':[], 'Networking':['Hostname'], 'Status':['Battery']}
+INFO_GROUPS = {'Hardware':['Processor', 'Hardware', 'Revision'], 'Operating System':['Kernel', 'Disk usage (root)', 'Disk usage (card)'], 'Applications':[], 'Networking':['Hostname'], 'Status':['Battery', 'GSM', 'GPS', 'Bluetooth', 'WiFi']}
 INFO_PARAMETERS = {
         'Kernel':'uname', 
         'Disk usage (root)':'df | grep /dev/root | cut -c53-56', 
@@ -59,5 +59,8 @@ INFO_PARAMETERS = {
         'Revision':'cat /proc/cpuinfo | grep Revision | cut -f2 | cut -c3-', 
         'Hostname': 'hostname', 
         'Battery': 'mdbus -s org.freesmartphone.odeviced /org/freesmartphone/Device/PowerSupply/battery org.freesmartphone.Device.PowerSupply.GetCapacity', 
-        'GSM': 'mdbus -s org.freesmartphone.ogsmd /org/freesmartphone/GSM/Device org.freesmartphone.GSM.Network.GetSignalStrength'
+        'GSM': 'mdbus -s org.freesmartphone.ogsmd /org/freesmartphone/GSM/Device org.freesmartphone.GSM.Network.GetSignalStrength', 
+        'GPS': 'mdbus -s org.freesmartphone.ousaged /org/freesmartphone/Usage org.freesmartphone.Usage.GetResourceState "GPS"', 
+        'Bluetooth': 'mdbus -s org.freesmartphone.ousaged /org/freesmartphone/Usage org.freesmartphone.Usage.GetResourceState "Bluetooth"', 
+        'WiFi': 'mdbus -s org.freesmartphone.ousaged /org/freesmartphone/Usage org.freesmartphone.Usage.GetResourceState "WiFi"'
         }

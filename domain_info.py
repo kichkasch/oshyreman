@@ -16,8 +16,14 @@ REDIRECT_OUTPUT = " > " + OUTPUTFILE # + " 2>" + ERRORFILE
 def getSysinfo():
     global infoObject
     if not infoObject:
-        doUpdate()
+        doInit()
     return infoObject
+
+def doInit():
+    global infoObject
+    infoObject = {}
+    for desc in INFO_PARAMETERS.keys():
+        infoObject [desc] = "n.a."
 
 def doUpdate():
     print "updating sys info"
