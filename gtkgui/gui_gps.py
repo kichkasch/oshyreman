@@ -54,20 +54,27 @@ class GPSDialog(gtk.Dialog):
         b = gtk.Button("Rename selected Track")
         b.connect('clicked', self._doRename)
         bButtons.pack_start(b, False, False,  5)
+        b = gtk.Button("Delete selected Track")
+        b.connect('clicked', self._doDelete)
+        bButtons.pack_start(b, False, False,  5)
         b = gtk.Button("Import Track")
         b.connect('clicked', self._doImport)
         bButtons.pack_start(b, False, False,  5)
         separator = gtk.HSeparator()
         bButtons.pack_start(separator, False, True, 5)
         b = gtk.Button("Pull Tracks from Freerunner")
+        b.connect('clicked', self._doPull)
         bButtons.pack_start(b, False, False,  5)
         b = gtk.Button("Push Tracks to Freerunner")
+        b.connect('clicked', self._doPush)
         bButtons.pack_start(b, False, False,  5)
         separator = gtk.HSeparator()
         bButtons.pack_start(separator, False, True, 5)
         b = gtk.Button("Clear Tracks on Freerunner")
+        b.connect('clicked', self._doRemoteClear)
         bButtons.pack_start(b, False, False,  5)
         b = gtk.Button("Clear Tracks locally")
+        b.connect('clicked', self._doLocalClear)
         bButtons.pack_end(b, False, False,  5)
         
         hbox.pack_end(bButtons, False, True,  5)
@@ -76,6 +83,12 @@ class GPSDialog(gtk.Dialog):
 
         self.vbox.pack_start(box, True, True, 5)
         self.vbox.show_all()
+
+    def _updateTracklist(self):
+        model = self._gpsTable.get_model()
+        model.clear()
+        for trackname in domain_gps.getLocalTrackList():
+            model.append([trackname])
 
     def _doRename(self, target):
         treeselection = self._gpsTable.get_selection()
@@ -88,6 +101,13 @@ class GPSDialog(gtk.Dialog):
         dia.destroy()
         self._updateTracklist()
 
+    def _doDelete(self, target):
+        treeselection = self._gpsTable.get_selection()
+        (model, iter) = treeselection.get_selected()
+        value = model.get_value(iter, 0)
+        domain_gps.doDelete(value)
+        self._updateTracklist()        
+        
     def _doImport(self, target):
         chooser = gtk.FileChooserDialog(title="Please choose file to import",action=gtk.FILE_CHOOSER_ACTION_OPEN,
                                   buttons=(gtk.STOCK_CANCEL,gtk.RESPONSE_CANCEL,gtk.STOCK_OPEN,gtk.RESPONSE_OK))
@@ -102,8 +122,16 @@ class GPSDialog(gtk.Dialog):
         chooser.destroy()
         self._updateTracklist()
 
-    def _updateTracklist(self):
-        model = self._gpsTable.get_model()
-        model.clear()
-        for trackname in domain_gps.getLocalTrackList():
-            model.append([trackname])
+    def _doPush(self, target):
+        domain_gps.doPush()
+        
+    def _doPull(self, target):
+        domain_gps.doPull()
+        self._updateTracklist()
+        
+    def _doLocalClear(self, target):
+        domain_gps.doLocalClear()
+        self._updateTracklist()        
+        
+    def _doRemoteClear(self, target):
+        domain_gps.doRemoteClear()

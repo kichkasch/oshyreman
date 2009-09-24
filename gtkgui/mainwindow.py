@@ -85,10 +85,13 @@ class Base():
                 bStatus.pack_start(self._labelPower, True, False, 0)
                 self._labelsStatus = {}
                 for x in ['GPS', 'Bluetooth', 'WiFi']:
-                    self._labelsStatus[x] = gtk.Label(x)
+                    self._labelsStatus[x] = gtk.Label() #x)
                     bStatus.pack_start(self._labelsStatus[x], True, False, 0)
                     if domain_info.getSysinfo()[x].strip().lower() == "true":
-                        self._labelsStatus[x].set_pattern('_' * len(x))
+                        color = 'blue'
+                    else:
+                        color = 'red'
+                    self._labelsStatus[x].set_markup('<span foreground="%s">%s</span>' %(color, x))
                 self._labelGSM = gtk.Label('GSM: %s %%' %(domain_info.getSysinfo()['GSM'].strip()))
                 bStatus.pack_end(self._labelGSM, True, False, 0)
             except KeyError:
@@ -141,9 +144,10 @@ class Base():
         
         for x in ['GPS', 'Bluetooth', 'WiFi']:
             if domain_info.getSysinfo()[x].strip().lower() == "true":
-                self._labelsStatus[x].set_pattern('_' * len(x))
+                color = 'blue'
             else:
-                self._labelsStatus[x].set_pattern('')
+                color = 'red'
+            self._labelsStatus[x].set_markup('<span foreground="%s">%s</span>' %(color, x))
         self._labelGSM.set_text('GSM: %s %%' %(domain_info.getSysinfo()['GSM'].strip()))
         for table in self._infoTables.values():
             model = table.get_model()

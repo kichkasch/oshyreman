@@ -7,16 +7,16 @@ import os,  os.path, sys
 from constants import *
 
 def doLocalClear():
-    os.system("rm -f '%s'" %(os.path.join(PATH_LOCAL_MAPS, "*.log")))
+    os.system("rm -f %s" %(os.path.join(PATH_LOCAL_MAPS, "*.log")))
     
 def doRemoteClear():
-    os.system("ssh %s rm -f '%s'" %(USER_REMOTE + "@" + HOST_REMOTE, os.path.join(PATH_REMOTE_MAPS, "*.log")))
+    os.system("ssh %s rm -f %s" %(USER_REMOTE + "@" + HOST_REMOTE, os.path.join(PATH_REMOTE_MAPS, "*.log")))
     
 def doPull():
-    os.system("scp '%s' '%s'" %(USER_REMOTE + "@" + HOST_REMOTE + ":" + os.path.join(PATH_REMOTE_MAPS, "*.log"), PATH_LOCAL_MAPS))
+    os.system("scp %s %s" %(USER_REMOTE + "@" + HOST_REMOTE + ":" + os.path.join(PATH_REMOTE_MAPS, "*.log"), PATH_LOCAL_MAPS))
 
 def doPush():
-    os.system("scp '%s' '%s'" %(os.path.join(PATH_LOCAL_MAPS, "*.log"), USER_REMOTE + "@" + HOST_REMOTE + ":" + PATH_REMOTE_MAPS))
+    os.system("scp %s %s" %(os.path.join(PATH_LOCAL_MAPS, "*.log"), USER_REMOTE + "@" + HOST_REMOTE + ":" + PATH_REMOTE_MAPS))
 
 def doImportGxp(src):
         if src.endswith('.gpx'):
@@ -28,6 +28,9 @@ def doImportGxp(src):
 
 def doRename(old,  new):
     os.system("mv '%s' '%s'" %(os.path.join(PATH_LOCAL_MAPS, old), os.path.join(PATH_LOCAL_MAPS, new)))
+
+def doDelete(value):
+    os.system("rm '%s'" %(os.path.join(PATH_LOCAL_MAPS, value)))
 
 def getLocalTrackList():
     ret = []
