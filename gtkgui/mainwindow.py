@@ -61,11 +61,11 @@ class Base():
         boxButtons = gtk.HBox(False, 5)
         bAbout = gtk.Button('About')
         bAbout.connect('clicked', self.showAbout)
-        boxButtons.pack_start(bAbout,  True,  False,  0)
+        boxButtons.pack_start(bAbout,  True,  True,  0)
 
         bQuit = gtk.Button('Quit')
         bQuit.connect_object("clicked", gtk.Widget.destroy, self.window)
-        boxButtons.pack_start(bQuit,  True,  False,  0)
+        boxButtons.pack_start(bQuit,  True,  True,  0)
 
         box.pack_start(boxButtons,  False,  False, 0)
 
