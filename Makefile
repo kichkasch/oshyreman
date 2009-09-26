@@ -3,7 +3,7 @@
 # global parameters
 TITLE=		"Offline SHR Manager"
 URL=		"https://projects.openmoko.org/projects/oshyreman/"
-VERSION=	"0.0.1"
+VERSION=	"0.1"
 
 dist:
 	mkdir -p build/ubuntu/DEBIAN
@@ -16,11 +16,13 @@ dist:
 	mkdir build/ubuntu/bin
 	ln -s /opt/oshyreman/oshyreman.py build/ubuntu/bin/oshyreman
 	ln -s /opt/oshyreman/oshyreman_gui.py build/ubuntu/bin/oshyreman_gui	
+	mkdir -p build/ubuntu/usr/share/applications
+	cp build/oshyreman.desktop build/ubuntu/usr/share/applications/oshyreman.desktop
 	cd build && dpkg --build ubuntu/ oshyreman-$(VERSION).deb
 	rm -rf build/ubuntu
 
 sdist: clean
-	tar czf build/oshyreman-src-$(VERSION).tar.gz Makefile COPYING *.py build/control
+	tar czf build/oshyreman-src-$(VERSION).tar.gz Makefile COPYING *.py gtkgui/*.py build/control build/oshyreman.desktop
 
 clean:
 	rm -f *.pyc gtkgui/*.pyc

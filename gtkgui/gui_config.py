@@ -72,4 +72,8 @@ class FileConfigurationDialog(gtk.Dialog):
         domain_config.doConfigPartDownload(value)
         domain_config.doConfigPartEdit()
         
-#        domain_config.doConfigPartUpload(value)
+        d = gtk.MessageDialog(self, type = gtk.MESSAGE_QUESTION, buttons = gtk.BUTTONS_YES_NO, message_format = "Apply changes to \n<%s>?" %(value))
+        ret = d.run()
+        d.destroy()
+        if ret == gtk.RESPONSE_YES:
+            domain_config.doConfigPartUpload(value)

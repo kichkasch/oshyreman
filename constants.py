@@ -8,13 +8,13 @@ HOST_REMOTE = "192.168.0.202"
 USER_REMOTE = "root"    # make sure, this user can login without password
 
 PROGRAM_NAME = "Offline SHR Manager"
-PROGRAM_VERSION = "0.0.1"
-FILEPATH_COPYING = "./COPYING"
+PROGRAM_VERSION = "0.1"
+FILEPATH_COPYING = "/opt/oshyreman/COPYING"
 PROGRAM_AUTHORS = ['Michael Pilgermann']
 PROGRAM_COMMENTS = "Automate recurring activities for the Freerunner from your Desktop."
 PROGRAM_HOMEPAGE = "http://projects.openmoko.org/projects/oshyreman/"
 
-#constants.py
+#
 # GPS Domain
 #
 PATH_LOCAL_MAPS = os.path.join(os.path.expanduser("~"), 'Maps') # use this version if you have local TangoGPS installation
@@ -31,6 +31,7 @@ BACKUP_FILES = [
     '/etc/freesmartphone/opim/sqlite-contacts.db', 
     '/etc/freesmartphone/opim/sqlite-calls.db', 
     '/etc/freesmartphone/opim/sqlite-messages.db', 
+    '/home/root/.launcher/launcher.db', 
     '/home/root/.evolution/calendar/local/system/calendar.ics']
 
 
@@ -39,11 +40,16 @@ BACKUP_FILES = [
 #
 PATH_LOCAL_CONFIG = os.path.join(PATH_LOCAL_DATA, "Config")
 TMPFILE_LOCAL_CONFIG = os.path.join(PATH_LOCAL_CONFIG, "conf.tmp")
-CONFIG_FILES = {'PISI Config File': '/home/root/.pisi/conf', 
+CONFIG_FILES = {
+        'PISI Config File': '/home/root/.pisi/conf', 
         'Frameworkd': '/etc/frameworkd.conf', 
+        'SHR Today': '/etc/shr-today.conf', 
+        'Midori': '/home/root/.config/midori/config', 
+        'SSHD': '/etc/ssh/sshd_config', 
         'Test': '/tmp/test.txt'}
 #PROGRAM_EDIT = '/usr/bin/kate'
 PROGRAM_EDIT = '/usr/bin/gedit'
+
 
 #
 # System information domain

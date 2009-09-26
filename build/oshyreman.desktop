@@ -1,0 +1,10 @@
+[Desktop Entry]
+Encoding=UTF-8
+Name=Offline SHR Manager
+Comment=Manage your Freerunner from your Desktop
+Version=0.1
+GenericName=Offline SHR Manager
+Terminal=false
+Type=Application
+Exec=python /opt/oshyreman/oshyreman_gui.py
+Categories=System;
