@@ -16,7 +16,7 @@ class GPSDialog(gtk.Dialog):
         Contructor - all components are assembled in here
         """
         gtk.Dialog.__init__(self, "oSHyReMan: GPS Track Management",  parent,  gtk.DIALOG_MODAL ,  (gtk.STOCK_QUIT,gtk.RESPONSE_OK))
-        self.set_size_request(500, -1)
+        self.set_size_request(600, -1)
         box = gtk.VBox(False,  5)
         
         labelTitle= gtk.Label()
@@ -51,6 +51,7 @@ class GPSDialog(gtk.Dialog):
         hbox.pack_start(separator, False, True, 5)
         
         bButtons = gtk.VBox(False, 5)
+        bButtons.set_size_request(180, -1)
         b = gtk.Button("Rename selected Track")
         b.connect('clicked', self._doRename)
         bButtons.pack_start(b, False, False,  5)

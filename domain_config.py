@@ -10,13 +10,22 @@ from constants import *
 import os
 
 def doConfig(desc):
+    doConfigPartDownload(desc)
+    doConfigPartEdit()
+    doConfigPartUpload(desc)
+
+def doConfigPartDownload(desc):
     if not os.path.exists(PATH_LOCAL_CONFIG):
             os.makedirs(PATH_LOCAL_CONFIG)
     file = CONFIG_FILES[desc]
-    print "Editing %s (%s)" %(desc, file)
     os.system("scp %s %s" %(USER_REMOTE + "@" + HOST_REMOTE + ":" + file, TMPFILE_LOCAL_CONFIG))
+    
+def doConfigPartUpload(desc):
+    file = CONFIG_FILES[desc]
+    os.system("scp %s %s %% rm -f %s" %(TMPFILE_LOCAL_CONFIG, USER_REMOTE + "@" + HOST_REMOTE + ":" + file, TMPFILE_LOCAL_CONFIG))
+    
+def doConfigPartEdit():
     os.system("%s %s" %(PROGRAM_EDIT, TMPFILE_LOCAL_CONFIG))
-    os.system("scp %s %s" %(TMPFILE_LOCAL_CONFIG, USER_REMOTE + "@" + HOST_REMOTE + ":" + file))
     
 def getList():
     return CONFIG_FILES

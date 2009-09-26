@@ -27,7 +27,6 @@ PATH_REMOTE_MAPS = "/home/root/Maps"
 #
 PATH_LOCAL_BACKUPS = os.path.join(PATH_LOCAL_DATA, "Backup")
 BACKUP_FILES = [
-    '/etc/test.tmp', 
     '/home/root/.pisi/conf', 
     '/etc/freesmartphone/opim/sqlite-contacts.db', 
     '/etc/freesmartphone/opim/sqlite-calls.db', 

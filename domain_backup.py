@@ -56,7 +56,8 @@ def do_deleteBackup(backupTimestamp):
     os.system("rm -f %s" %(os.path.join(PATH_LOCAL_BACKUPS,"backup-" + backupTimestamp + ".tar.gz")))
         
 def do_restore(backupTimestamp, fileList):
-    print "would restore ", fileList, "from", backupTimestamp
+    for file in fileList:
+        os.system("tar xzf %s -O %s | ssh %s 'cat > %s'" %(os.path.join(PATH_LOCAL_BACKUPS,"backup-" + backupTimestamp + ".tar.gz"), file[1:], USER_REMOTE + "@" + HOST_REMOTE, file))
         
 def dispatch(argv):
     if argv[1] == 'bck-backup':
