@@ -52,6 +52,12 @@ def getFilesForBackup(backupTimestamp):
             ret.append("/" + line.strip().split()[5])
     return ret
         
+def do_deleteBackup(backupTimestamp):
+    os.system("rm -f %s" %(os.path.join(PATH_LOCAL_BACKUPS,"backup-" + backupTimestamp + ".tar.gz")))
+        
+def do_restore(backupTimestamp, fileList):
+    print "would restore ", fileList, "from", backupTimestamp
+        
 def dispatch(argv):
     if argv[1] == 'bck-backup':
         do_backup()
@@ -61,6 +67,10 @@ def dispatch(argv):
     elif argv[1] == 'bck-files':
         for file in getFilesForBackup(argv[2]):
             print file
+    elif argv[1] == 'bck-del':
+        do_deleteBackup(argv[2])
+    elif argv[1] == 'bck-rest':
+        do_restore(argv[2], argv[3:])
     elif argv[1] == 'bck-test':
         print _determinePathLength(os.path.join(PATH_LOCAL_BACKUPS, datetime.now().strftime("%Y%m%d-%H%M%S")))
 

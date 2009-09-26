@@ -15,7 +15,7 @@ class BackupDialog(gtk.Dialog):
         Contructor - all components are assembled in here
         """
         gtk.Dialog.__init__(self, "oSHyReMan: Backup and Restore",  parent,  gtk.DIALOG_MODAL ,  (gtk.STOCK_QUIT,gtk.RESPONSE_OK))
-        self.set_size_request(500, 600)
+        self.set_size_request(600, 700)
 
         box = gtk.VBox(False,  5)
         
@@ -75,6 +75,7 @@ class BackupDialog(gtk.Dialog):
         hbox.pack_start(separator, False, True, 5)
         
         bButtons = gtk.VBox(False, 5)
+        bButtons.set_size_request(180, -1)
         b = gtk.Button("Select All")
         b.connect('clicked', self._doSelectAll, store)
         bButtons.pack_start(b, False, False,  5)
@@ -137,9 +138,12 @@ class BackupDialog(gtk.Dialog):
         hbox = gtk.HBox(False, 5)
         
         vbox = gtk.VBox(False, 5)
-        self._combo = gtk.Combo()
-        self._combo.set_popdown_strings(domain_backup.getBackupList())
-        self._combo.entry.connect("activate", self._comboSelected)
+        
+        self._combo = gtk.combo_box_new_text()
+        for x in domain_backup.getBackupList():
+            self._combo.append_text(x)
+        self._combo.connect('changed', self._comboSelected)
+
         vbox.pack_start(self._combo, False, True, 5)
 
         scrolled_window = gtk.ScrolledWindow()
@@ -164,7 +168,6 @@ class BackupDialog(gtk.Dialog):
         self._restoreTable.append_column(col)
         self._restoreTable.get_selection().set_mode(gtk.SELECTION_SINGLE)
         scrolled_window.add_with_viewport(self._restoreTable)
-        self._updateRestoreFileList()
 
         hbox.pack_start(vbox, True, True,  5)
         
@@ -172,13 +175,25 @@ class BackupDialog(gtk.Dialog):
         hbox.pack_start(separator, False, True, 5)
         
         bButtons = gtk.VBox(False, 5)
+        bButtons.set_size_request(180, -1)
         b = gtk.Button("Delete selected Backup")
         bButtons.pack_start(b, False, False,  5)
-#        b.connect('clicked', self._doSelectAll, store)
+        b.connect('clicked', self._doDeleteBackup)
         separator = gtk.HSeparator()
         bButtons.pack_start(separator, False, True, 5)
+        
+        b = gtk.Button("Select All")
+        b.connect('clicked', self._doSelectAll, store)
+        bButtons.pack_start(b, False, False,  5)
+        b = gtk.Button("Deselect All")
+        b.connect('clicked', self._doDeselectAll, store)
+        bButtons.pack_start(b, False, False,  5)
+        b = gtk.Button("Invert Selection")
+        b.connect('clicked', self._doInvert, store)
+        bButtons.pack_start(b, False, False,  5)
+        
         b = gtk.Button("Restore selected Files")
-#        b.connect('clicked', self._doBackup, store)
+        b.connect('clicked', self._doRestore)
         bButtons.pack_end(b, False, False,  5)
         separator = gtk.HSeparator()
         bButtons.pack_end(separator, False, True, 5)
@@ -194,12 +209,33 @@ class BackupDialog(gtk.Dialog):
         self._updateRestoreFileList()
         
     def _updateRestoreList(self):
-        self._combo.set_popdown_strings(domain_backup.getBackupList())
+        store = self._combo.get_model()
+        store.clear()
+        for x in domain_backup.getBackupList():
+            store.append([x])
         
     def _updateRestoreFileList(self):
-        string = self._combo.entry.get_text()
+        string = self._combo.get_active_text()
         model = self._restoreTable.get_model()
         model.clear()
-        for filename in domain_backup.getFilesForBackup(string):
-            model.append([True, filename])
+        if string:
+            for filename in domain_backup.getFilesForBackup(string):
+                model.append([True, filename])
         
+    def _doDeleteBackup(self, target):
+        string = self._combo.get_active_text()
+        domain_backup.do_deleteBackup(string)
+        self._updateRestoreList()
+        
+    def _doRestore(self, target):
+        files = []
+        string = self._combo.get_active_text()
+        model = self._restoreTable.get_model()
+        treeiter = model.get_iter_first()
+        while treeiter:
+            if model[treeiter][0]:
+                files.append(model[treeiter][1])
+            treeiter = model.iter_next(treeiter)
+        if len(files) > 0:
+            domain_backup.do_restore(string, files)
+    
