@@ -45,6 +45,7 @@ CONFIG_FILES = {
         'Frameworkd': '/etc/frameworkd.conf', 
         'SHR Today': '/etc/shr-today.conf', 
         'Midori': '/home/root/.config/midori/config', 
+        'Midori booksmarks': '/home/root/.config/midori/bookmarks.xbel', 
         'SSHD': '/etc/ssh/sshd_config', 
         'Test': '/tmp/test.txt'}
 #PROGRAM_EDIT = '/usr/bin/kate'
