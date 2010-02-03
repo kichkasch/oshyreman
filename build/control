@@ -1,8 +1,0 @@
-Package: oshyreman
-Version: 0.1
-Section: apps
-Maintainer: Michael Pilgermann <kichkasch@gmx.de>
-Architecture: all
-Depends: python
-Homepage: https://projects.openmoko.org/projects/oshyreman/
-Description: Offline SHR Manager

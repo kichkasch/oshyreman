@@ -3,26 +3,38 @@
 # global parameters
 TITLE=		"Offline SHR Manager"
 URL=		"https://projects.openmoko.org/projects/oshyreman/"
-VERSION=	"0.1"
+VERSION=	"0.1.1"
+PACKAGE_NAME =oshyreman
 
-dist:
-	mkdir -p build/ubuntu/DEBIAN
-	cp build/control build/ubuntu/DEBIAN/control
-	mkdir -p build/ubuntu/usr/bin
-	mkdir -p build/ubuntu/opt/oshyreman
-	cp *.py COPYING build/ubuntu/opt/oshyreman
-	mkdir -p build/ubuntu/opt/oshyreman/gtkgui
-	cp gtkgui/*.py build/ubuntu/opt/oshyreman/gtkgui
-	mkdir build/ubuntu/bin
-	ln -s /opt/oshyreman/oshyreman.py build/ubuntu/bin/oshyreman
-	ln -s /opt/oshyreman/oshyreman_gui.py build/ubuntu/bin/oshyreman_gui	
-	mkdir -p build/ubuntu/usr/share/applications
-	cp build/oshyreman.desktop build/ubuntu/usr/share/applications/oshyreman.desktop
-	cd build && dpkg --build ubuntu/ oshyreman-$(VERSION).deb
-	rm -rf build/ubuntu
-
-sdist: clean
-	tar czf build/oshyreman-src-$(VERSION).tar.gz Makefile COPYING *.py gtkgui/*.py build/control build/oshyreman.desktop
+# for UBUNTU Launchpad upload of deb package
+PGP_KEYID ="1B09FB51"
+BUILD_VERSION = "0ubuntu3"
 
 clean:
 	rm -f *.pyc gtkgui/*.pyc
+	rm -f apidoc.tar.gz
+	rm -f build/$(PACKAGE_NAME)-$(VERSION).orig.tar.gz
+	rm -rf build/$(PACKAGE_NAME)-$(VERSION)
+	
+sdist: clean
+	tar cf build/tmp.tar Makefile COPYING README *.py gtkgui/*.py build/debian/* build/oshyreman.desktop
+	mkdir $(PACKAGE_NAME)-$(VERSION)
+	(cd $(PACKAGE_NAME)-$(VERSION) && tar -xf ../build/tmp.tar)
+	rm build/tmp.tar
+	tar czf build/$(PACKAGE_NAME)-src-$(VERSION).tar.gz $(PACKAGE_NAME)-$(VERSION)
+	rm -rf $(PACKAGE_NAME)-$(VERSION)	
+
+# All up-to-date information must be applied to sub dir build/debian in advance
+sdist_ubuntu: sdist
+	export DEBFULLNAME="Michael Pilgermann"
+	export DEBEMAIL="kichkasch@gmx.de"
+	cp build/$(PACKAGE_NAME)-src-$(VERSION).tar.gz build/$(PACKAGE_NAME)-$(VERSION).orig.tar.gz
+	(cd build && tar -xzf $(PACKAGE_NAME)-$(VERSION).orig.tar.gz)
+	cp -r build/debian build/$(PACKAGE_NAME)-$(VERSION)/
+	cp README build/$(PACKAGE_NAME)-$(VERSION)/debian/README.Debian
+	dch -m -c build/$(PACKAGE_NAME)-$(VERSION)/debian/changelog
+	cp build/$(PACKAGE_NAME)-$(VERSION)/debian/changelog build/debian
+	(cd build/$(PACKAGE_NAME)-$(VERSION)/ && dpkg-buildpackage -S -k$(PGP_KEYID))
+ 
+ppa_upload: sdist_ubuntu
+	(cd build/ && dput --config dput.config kichkasch-ppa $(PACKAGE_NAME)_$(VERSION)-$(BUILD_VERSION)_source.changes)

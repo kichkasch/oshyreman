@@ -1,0 +1,15 @@
+Source: oshyreman
+Section: misc
+Priority: optional
+Maintainer: Michael Pilgermann <kichkasch@gmx.de>
+Build-Depends: cdbs (>= 0.4.49), debhelper (>= 7), python-central (>=0.5.6)
+XS-Python-Version: >= 2.4
+Standards-Version: 3.8.3.0
+Homepage: http://freshmeat.net/projects/oshyreman
+
+Package: oshyreman
+Architecture: all
+XB-Python-Version: ${python:Versions}
+Depends: ${python:Depends}, ${misc:Depends}, python-gtk2, python-dateutil, openssh-client, tar
+Description: Offline SHR Manager
+ With oshyreman (Offline SHR Manager) you can automate recurring activities for the Freerunner from your Desktop.

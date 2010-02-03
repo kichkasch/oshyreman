@@ -1,0 +1,17 @@
+oshyreman (0.1.1-0ubuntu3) karmic; urgency=low
+
+  * Fixed one type in setup.py for proper destination of startup link in usr - bin
+
+ -- Michael Pilgermann <kichkasch@gmx.de>  Wed, 03 Feb 2010 17:33:48 +0100
+
+oshyreman (0.1.1-0ubuntu2) karmic; urgency=low
+
+  * Fixed some small but important typos in build env
+
+ -- Michael Pilgermann <kichkasch@gmx.de>  Wed, 03 Feb 2010 17:10:39 +0100
+
+oshyreman (0.1.1-0ubuntu1) karmic; urgency=low
+
+  * Initial Ubuntu release
+
+ -- Michael Pilgermann <kichkasch@gmx.de>  Wed, 03 Feb 2010 16:46:48 +0100

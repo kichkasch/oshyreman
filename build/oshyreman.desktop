@@ -2,7 +2,7 @@
 Encoding=UTF-8
 Name=Offline SHR Manager
 Comment=Manage your Freerunner from your Desktop
-Version=0.1
+Version=0.1.1
 GenericName=Offline SHR Manager
 Terminal=false
 Type=Application

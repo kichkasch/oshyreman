@@ -8,7 +8,7 @@ HOST_REMOTE = "192.168.0.202"
 USER_REMOTE = "root"    # make sure, this user can login without password
 
 PROGRAM_NAME = "Offline SHR Manager"
-PROGRAM_VERSION = "0.1"
+PROGRAM_VERSION = "0.1.1"
 FILEPATH_COPYING = "/opt/oshyreman/COPYING"
 PROGRAM_AUTHORS = ['Michael Pilgermann']
 PROGRAM_COMMENTS = "Automate recurring activities for the Freerunner from your Desktop."
@@ -64,7 +64,7 @@ INFO_PARAMETERS = {
         'Hardware':'cat /proc/cpuinfo | grep Hardware | cut -f2 | cut -c3-', 
         'Revision':'cat /proc/cpuinfo | grep Revision | cut -f2 | cut -c3-', 
         'Hostname': 'hostname', 
-        'Battery': 'mdbus -s org.freesmartphone.odeviced /org/freesmartphone/Device/PowerSupply/battery org.freesmartphone.Device.PowerSupply.GetCapacity', 
+        'Battery': 'mdbus -s org.freesmartphone.odeviced /org/freesmartphone/Device/PowerSupply org.freesmartphone.Device.PowerSupply.GetCapacity', 
         'GSM': 'mdbus -s org.freesmartphone.ogsmd /org/freesmartphone/GSM/Device org.freesmartphone.GSM.Network.GetSignalStrength', 
         'GPS': 'mdbus -s org.freesmartphone.ousaged /org/freesmartphone/Usage org.freesmartphone.Usage.GetResourceState "GPS"', 
         'Bluetooth': 'mdbus -s org.freesmartphone.ousaged /org/freesmartphone/Usage org.freesmartphone.Usage.GetResourceState "Bluetooth"', 
